@@ -38,7 +38,7 @@ const crops = [
   { name: "मक्का (हाइब्रिड)", yield: "मध्यम", note: "अच्छी निकासी वाले खेत में ही लगाएँ" },
 ];
 
-export default function MausamPage() {
+function MausamPage() {
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
 

@@ -31,7 +31,7 @@ function pos(c: Case) {
   return { left: `${Math.min(92, Math.max(6, x))}%`, top: `${Math.min(90, Math.max(8, y))}%` };
 }
 
-export default function MapPage() {
+function MapPage() {
   const { cases } = useAgri();
   const [filter, setFilter] = useState<"all" | "crop" | "livestock">("all");
   const [selected, setSelected] = useState<string | null>(null);

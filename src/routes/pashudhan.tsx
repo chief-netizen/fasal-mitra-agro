@@ -23,7 +23,7 @@ export const Route = createFileRoute("/pashudhan")({
   component: PashudhanPage,
 });
 
-export default function PashudhanPage() {
+function PashudhanPage() {
   const { animals } = useAgri();
   const [open, setOpen] = useState(false);
   const [tag, setTag] = useState("");

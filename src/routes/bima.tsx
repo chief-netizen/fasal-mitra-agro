@@ -29,7 +29,7 @@ const schemes = [
   { id: "state", label: "राज्य आपदा राहत" },
 ];
 
-export default function BimaPage() {
+function BimaPage() {
   const { cases } = useAgri();
   const [scheme, setScheme] = useState("pmfby");
   const [loading, setLoading] = useState(false);
