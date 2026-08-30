@@ -94,17 +94,19 @@
   }
 }
 
-@utility field {
-  width: 100%;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background-color: var(--color-card);
-  padding: 0.6rem 0.8rem;
-  font-size: 0.9rem;
-  outline: none;
-}
+@layer components {
+  .field {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-card);
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+    outline: none;
+  }
 
-@utility field:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px oklch(0.52 0.13 152 / 0.15);
+  .field:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px oklch(0.52 0.13 152 / 0.15);
+  }
 }
