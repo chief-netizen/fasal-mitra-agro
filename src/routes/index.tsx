@@ -82,7 +82,7 @@ function DiagnosePage() {
       quantity: "500 ग्राम",
       status: "Open",
       helpers: [],
-      imageUrl: preview ?? undefined,
+      ...(preview ? { imageUrl: preview } : {}),
       ...result,
     });
     setPosted(true);
