@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as MausamRouteImport } from './routes/mausam'
+import { Route as PashudhanRouteImport } from './routes/pashudhan'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const MausamRoute = MausamRouteImport.update({
   path: '/mausam',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PashudhanRoute = PashudhanRouteImport.update({
+  id: '/pashudhan',
+  path: '/pashudhan',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/map': typeof MapRoute
   '/mausam': typeof MausamRoute
+  '/pashudhan': typeof PashudhanRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/map': typeof MapRoute
   '/mausam': typeof MausamRoute
+  '/pashudhan': typeof PashudhanRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/map': typeof MapRoute
   '/mausam': typeof MausamRoute
+  '/pashudhan': typeof PashudhanRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/map' | '/mausam'
+  fullPaths: '/' | '/map' | '/mausam' | '/pashudhan'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/map' | '/mausam'
-  id: '__root__' | '/' | '/map' | '/mausam'
+  to: '/' | '/map' | '/mausam' | '/pashudhan'
+  id: '__root__' | '/' | '/map' | '/mausam' | '/pashudhan'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   MapRoute: typeof MapRoute
   MausamRoute: typeof MausamRoute
+  PashudhanRoute: typeof PashudhanRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MausamRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pashudhan': {
+      id: '/pashudhan'
+      path: '/pashudhan'
+      fullPath: '/pashudhan'
+      preLoaderRoute: typeof PashudhanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   MapRoute: MapRoute,
   MausamRoute: MausamRoute,
+  PashudhanRoute: PashudhanRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
