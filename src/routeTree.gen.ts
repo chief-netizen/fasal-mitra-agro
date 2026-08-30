@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BimaRouteImport } from './routes/bima'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as MausamRouteImport } from './routes/mausam'
 import { Route as PashudhanRouteImport } from './routes/pashudhan'
@@ -17,6 +18,11 @@ import { Route as PashudhanRouteImport } from './routes/pashudhan'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BimaRoute = BimaRouteImport.update({
+  id: '/bima',
+  path: '/bima',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MapRoute = MapRouteImport.update({
@@ -37,12 +43,14 @@ const PashudhanRoute = PashudhanRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bima': typeof BimaRoute
   '/map': typeof MapRoute
   '/mausam': typeof MausamRoute
   '/pashudhan': typeof PashudhanRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bima': typeof BimaRoute
   '/map': typeof MapRoute
   '/mausam': typeof MausamRoute
   '/pashudhan': typeof PashudhanRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bima': typeof BimaRoute
   '/map': typeof MapRoute
   '/mausam': typeof MausamRoute
   '/pashudhan': typeof PashudhanRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/map' | '/mausam' | '/pashudhan'
+  fullPaths: '/' | '/bima' | '/map' | '/mausam' | '/pashudhan'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/map' | '/mausam' | '/pashudhan'
-  id: '__root__' | '/' | '/map' | '/mausam' | '/pashudhan'
+  to: '/' | '/bima' | '/map' | '/mausam' | '/pashudhan'
+  id: '__root__' | '/' | '/bima' | '/map' | '/mausam' | '/pashudhan'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BimaRoute: typeof BimaRoute
   MapRoute: typeof MapRoute
   MausamRoute: typeof MausamRoute
   PashudhanRoute: typeof PashudhanRoute
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bima': {
+      id: '/bima'
+      path: '/bima'
+      fullPath: '/bima'
+      preLoaderRoute: typeof BimaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/map': {
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BimaRoute: BimaRoute,
   MapRoute: MapRoute,
   MausamRoute: MausamRoute,
   PashudhanRoute: PashudhanRoute,
