@@ -77,19 +77,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "AgriConnect — किसानों के लिए AI सहायक" },
+      {
+        name: "description",
+        content:
+          "फ़सल व पशु रोग की AI जाँच, समुदाय सहायता नक्शा, मौसम सलाह और बीमा दस्तावेज़ — हिंदी में।",
+      },
+      { property: "og:title", content: "AgriConnect — किसानों के लिए AI सहायक" },
+      {
+        property: "og:description",
+        content: "रोग जाँच, सहायता नक्शा, मौसम सलाह, पशुधन और बीमा — एक ही ऐप में।",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
