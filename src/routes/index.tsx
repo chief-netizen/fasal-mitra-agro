@@ -81,15 +81,37 @@ function DiagnosePage() {
           mapTitle: "सहायता नक्शे पर दवा की माँग डालें",
         };
 
-  function runDiagnosis(imageUrl: string | null) {
+  function identifyFromFilename(fileName: string | null) {
+    const normalized = (fileName ?? "").toLowerCase();
+
+    const keywordMap = [
+      { keys: ["rice", "paddy", "blast"], disease: mockDiagnoses[0] },
+      { keys: ["brown", "spot", "leaf"], disease: mockDiagnoses[1] },
+      { keys: ["wheat", "rust", "yellow"], disease: mockDiagnoses[2] },
+      { keys: ["tomato", "blight", "early"], disease: mockDiagnoses[3] },
+      { keys: ["late", "tomato", "blight"], disease: mockDiagnoses[4] },
+      { keys: ["maize", "corn", "leaf"], disease: mockDiagnoses[5] },
+      { keys: ["cotton", "curl", "leaf"], disease: mockDiagnoses[6] },
+      { keys: ["potato", "early", "alternaria"], disease: mockDiagnoses[7] },
+      { keys: ["cow", "buffalo", "fmd", "mouth", "foot"], disease: mockDiagnoses[8] },
+      { keys: ["animal", "skin", "infection", "mammal"], disease: mockDiagnoses[9] },
+    ];
+
+    const match = keywordMap.find(({ keys }) => keys.some((key) => normalized.includes(key)));
+    return match?.disease ?? mockDiagnoses[pick % mockDiagnoses.length]!;
+  }
+
+  function runDiagnosis(imageUrl: string | null, fileName?: string | null) {
     setPreview(imageUrl);
     setResult(null);
     setPosted(false);
     setLoading(true);
-    const d = mockDiagnoses[pick % mockDiagnoses.length]!;
+
+    const detected = identifyFromFilename(fileName ?? (imageUrl ?? ""));
     setPick((p) => p + 1);
+
     setTimeout(() => {
-      setResult(d);
+      setResult(detected);
       setLoading(false);
     }, 1600);
   }
@@ -97,7 +119,7 @@ function DiagnosePage() {
   function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
     if (!f) return;
-    runDiagnosis(URL.createObjectURL(f));
+    runDiagnosis(URL.createObjectURL(f), f.name);
   }
 
   function speak() {

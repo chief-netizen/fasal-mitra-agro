@@ -35,9 +35,9 @@ export function AppShell({
   const navItems = language === "en" ? nav.en : nav.hi;
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-background">
+    <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col bg-background">
       <header className="sticky top-0 z-20 border-b border-border bg-card/90 px-5 pb-3 pt-4 backdrop-blur">
-        <div className="flex items-center gap-2">
+        <div className="mx-auto flex w-full max-w-[1200px] items-center gap-2">
           <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Leaf className="h-4 w-4" />
           </span>
@@ -55,11 +55,15 @@ export function AppShell({
             />
           </div>
         </div>
-        <h1 className="mt-3 text-xl font-semibold tracking-tight">{title}</h1>
-        <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>
+        <div className="mx-auto mt-3 w-full max-w-[1200px]">
+          <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
+          <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>
+        </div>
       </header>
 
-      <main className="flex-1 space-y-4 px-5 py-5">{children}</main>
+      <main className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col gap-4 px-5 py-5 md:grid md:grid-cols-[repeat(auto-fit,minmax(320px,1fr))] md:items-start">
+        {children}
+      </main>
 
       <nav className="sticky bottom-0 z-20 grid grid-cols-5 border-t border-border bg-card/95 backdrop-blur">
         {navItems.map(({ to, label, icon: Icon }) => {
