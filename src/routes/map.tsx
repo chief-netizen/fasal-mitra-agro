@@ -11,8 +11,7 @@ export const Route = createFileRoute("/map")({
       { title: "सहायता नक्शा — AgriConnect" },
       {
         name: "description",
-        content:
-          "आस-पास के किसानों की दवा की माँग देखिए, मदद कीजिए और महामारी अलर्ट पाइए।",
+        content: "आस-पास के किसानों की दवा की माँग देखिए, मदद कीजिए और महामारी अलर्ट पाइए।",
       },
       { property: "og:title", content: "सहायता नक्शा — AgriConnect" },
       {
@@ -158,17 +157,9 @@ function MapPage() {
   );
 }
 
-function CaseCard({
-  c,
-  compact,
-  onSelect,
-}: {
-  c: Case;
-  compact?: boolean;
-  onSelect?: () => void;
-}) {
+function CaseCard({ c, compact, onSelect }: { c: Case; compact?: boolean; onSelect?: () => void }) {
   return (
-    <Card className="space-y-2" >
+    <Card className="space-y-2">
       <div className="flex items-start justify-between gap-2" onClick={onSelect}>
         <div>
           <p className="text-sm font-semibold">{c.disease}</p>
@@ -176,7 +167,9 @@ function CaseCard({
             {c.farmer} · {c.district} · {c.createdAt}
           </p>
         </div>
-        <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${urgencyClass[c.urgency]}`}>
+        <span
+          className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${urgencyClass[c.urgency]}`}
+        >
           {urgencyLabel[c.urgency]}
         </span>
       </div>

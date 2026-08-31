@@ -149,7 +149,12 @@ const seedAnimals: Animal[] = [
     nextVaccination: "12 नवं 2026",
     breeding: "गाभिन — 5वाँ माह",
     events: [
-      { at: "कल, 17:05", type: "बीमारी", detail: "मुँह में छाले, लार गिरना — FMD संदेह", source: "ऐप" },
+      {
+        at: "कल, 17:05",
+        type: "बीमारी",
+        detail: "मुँह में छाले, लार गिरना — FMD संदेह",
+        source: "ऐप",
+      },
       { at: "12 मई", type: "टीकाकरण", detail: "HS + BQ टीका लगाया गया", source: "ऐप" },
     ],
   },
@@ -162,7 +167,14 @@ const seedAnimals: Animal[] = [
     lastVaccination: "02 जून 2026",
     nextVaccination: "02 दिसं 2026",
     breeding: "प्रजनन योग्य",
-    events: [{ at: "3 दिन पहले", type: "सेंसर", detail: "शरीर का तापमान 39.8°C — निगरानी", source: "RFID टैग" }],
+    events: [
+      {
+        at: "3 दिन पहले",
+        type: "सेंसर",
+        detail: "शरीर का तापमान 39.8°C — निगरानी",
+        source: "RFID टैग",
+      },
+    ],
   },
 ];
 

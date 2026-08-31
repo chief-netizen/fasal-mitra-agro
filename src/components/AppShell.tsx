@@ -82,13 +82,7 @@ export function AppShell({
   );
 }
 
-export function Card({
-  children,
-  className = "",
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <div
       className={`rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-soft)] ${className}`}

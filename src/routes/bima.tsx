@@ -270,9 +270,7 @@ function BimaPage() {
   }
 
   const docs = requiredDocs[scheme];
-  const claimProgress = latest
-    ? Math.min(99, Math.round((latest.confidence + 0.25) * 100))
-    : 0;
+  const claimProgress = latest ? Math.min(99, Math.round((latest.confidence + 0.25) * 100)) : 0;
 
   return (
     <AppShell title={content.title} subtitle={content.subtitle}>
@@ -336,17 +334,23 @@ function BimaPage() {
         <div className="h-2 overflow-hidden rounded-full bg-muted">
           <div className="h-full rounded-full bg-primary" style={{ width: `${claimProgress}%` }} />
         </div>
-        <p className="text-[11px] text-muted-foreground">
-          {content.schemeText[scheme]}
-        </p>
+        <p className="text-[11px] text-muted-foreground">{content.schemeText[scheme]}</p>
       </Card>
 
       <Card className="space-y-1.5 text-xs">
         <SectionLabel>{content.evidence}</SectionLabel>
-        <p>• {language === "en" ? "Disease report" : "रोग रिपोर्ट"}: {latest?.disease ?? "—"} ({latest ? Math.round(latest.confidence * 100) : 0}%)</p>
-        <p>• {language === "en" ? "Geo-tagged photo" : "जियो-टैग फोटो"}: {latest?.district ?? "—"}</p>
+        <p>
+          • {language === "en" ? "Disease report" : "रोग रिपोर्ट"}: {latest?.disease ?? "—"} (
+          {latest ? Math.round(latest.confidence * 100) : 0}%)
+        </p>
+        <p>
+          • {language === "en" ? "Geo-tagged photo" : "जियो-टैग फोटो"}: {latest?.district ?? "—"}
+        </p>
         <p>• {language === "en" ? "Weather record" : "मौसम रिकॉर्ड"}: 4–6 days heavy rain (75%)</p>
-        <p>• {language === "en" ? "Farmer" : "किसान"}: रामलाल यादव · {language === "en" ? "Land record" : "खसरा संख्या"} 214/3 · 1.2 hectare</p>
+        <p>
+          • {language === "en" ? "Farmer" : "किसान"}: रामलाल यादव ·{" "}
+          {language === "en" ? "Land record" : "खसरा संख्या"} 214/3 · 1.2 hectare
+        </p>
       </Card>
 
       <button
@@ -379,17 +383,27 @@ function BimaPage() {
                 : `दिनांक ${new Date().toLocaleDateString("hi-IN")} को रामलाल यादव द्वारा 1.2 हेक्टेयर की फ़सल के लिए दावा ड्राफ़्ट तैयार किया गया है। AI द्वारा ${latest?.disease ?? "रोग"} की पुष्टि ${latest ? Math.round(latest.confidence * 100) : 0}% विश्वास के साथ हुई है। मौसम से संबंधित 75% जोखिम और जियो-टैग फोटो संलग्न हैं। दावा फार्म कार्यालय जमा के लिए तैयार है।`}
             </p>
             <div className="flex items-center gap-1.5 text-[11px] text-primary">
-              <Paperclip className="h-3.5 w-3.5" /> {language === "en" ? "2 supporting files attached" : "2 सहायक फ़ाइलें संलग्न"}
+              <Paperclip className="h-3.5 w-3.5" />{" "}
+              {language === "en" ? "2 supporting files attached" : "2 सहायक फ़ाइलें संलग्न"}
             </div>
           </Card>
 
           <Card className="space-y-2">
             <SectionLabel>{content.tips}</SectionLabel>
             <p className="text-xs">
-              <span className="font-medium">PMFBY</span> — {language === "en" ? "likely eligible for notified crop loss" : "संभावित पात्र (अधिसूचित फ़सल क्षति)"}
+              <span className="font-medium">PMFBY</span> —{" "}
+              {language === "en"
+                ? "likely eligible for notified crop loss"
+                : "संभावित पात्र (अधिसूचित फ़सल क्षति)"}
             </p>
             <p className="text-xs">
-              <span className="font-medium">{language === "en" ? "State relief" : "राज्य आपदा राहत"}</span> — {language === "en" ? "review under rain-related damage rules" : "वर्षा-जनित क्षति के अंतर्गत समीक्षा योग्य"}
+              <span className="font-medium">
+                {language === "en" ? "State relief" : "राज्य आपदा राहत"}
+              </span>{" "}
+              —{" "}
+              {language === "en"
+                ? "review under rain-related damage rules"
+                : "वर्षा-जनित क्षति के अंतर्गत समीक्षा योग्य"}
             </p>
             <p className="flex items-start gap-2 rounded-lg bg-accent/50 p-2 text-[11px] text-accent-foreground">
               <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
