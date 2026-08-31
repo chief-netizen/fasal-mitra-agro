@@ -61,7 +61,7 @@ export function AppShell({
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col gap-4 px-5 py-5 md:grid md:grid-cols-[repeat(auto-fit,minmax(320px,1fr))] md:items-start">
+      <main className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col gap-4 px-5 py-5 lg:grid lg:grid-cols-2 lg:items-start">
         {children}
       </main>
 

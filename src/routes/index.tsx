@@ -155,115 +155,125 @@ function DiagnosePage() {
 
   return (
     <AppShell title={content.appTitle} subtitle={content.subtitle}>
-      <Card className="flex items-center justify-between gap-3 bg-secondary/60">
+      <Card className="flex items-center justify-between gap-3 bg-secondary/60 lg:col-span-2">
         <div className="flex items-center gap-2 text-xs text-secondary-foreground">
           <WifiOff className="h-4 w-4" />
           {content.offline}
         </div>
       </Card>
 
-      <input
-        ref={fileRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        className="hidden"
-        onChange={onFile}
-      />
-
-      {preview ? (
-        <img
-          src={preview}
-          alt="अपलोड की गई फ़सल/पशु की फ़ोटो"
-          className="h-48 w-full rounded-xl border border-border object-cover"
+      <div className="space-y-4 lg:col-span-2">
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className="hidden"
+          onChange={onFile}
         />
-      ) : (
-        <button
-          onClick={() => fileRef.current?.click()}
-          className="flex h-48 w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-        >
-          <Camera className="h-8 w-8" />
-          <span className="text-sm font-medium">{content.upload}</span>
-          <span className="text-[11px]">{content.uploadHint}</span>
-        </button>
-      )}
 
-      <div className="grid grid-cols-2 gap-3">
-        <button
-          onClick={() => fileRef.current?.click()}
-          className="rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground"
-        >
-          {content.check}
-        </button>
-        <button
-          onClick={() => runDiagnosis(null)}
-          className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-medium"
-        >
-          <Mic className="h-4 w-4" /> {content.sample}
-        </button>
+        <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+          <div className="space-y-4">
+            {preview ? (
+              <img
+                src={preview}
+                alt="अपलोड की गई फ़सल/पशु की फ़ोटो"
+                className="h-64 w-full rounded-xl border border-border object-cover"
+              />
+            ) : (
+              <button
+                onClick={() => fileRef.current?.click()}
+                className="flex h-64 w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+              >
+                <Camera className="h-8 w-8" />
+                <span className="text-sm font-medium">{content.upload}</span>
+                <span className="text-[11px]">{content.uploadHint}</span>
+              </button>
+            )}
+
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => fileRef.current?.click()}
+                className="rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground"
+              >
+                {content.check}
+              </button>
+              <button
+                onClick={() => runDiagnosis(null)}
+                className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-medium"
+              >
+                <Mic className="h-4 w-4" /> {content.sample}
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {loading && (
+              <Card className="flex items-center gap-3 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                {content.scanning}
+              </Card>
+            )}
+
+            {result && (
+              <Card className="space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <SectionLabel>{content.identify}</SectionLabel>
+                    <h2 className="mt-1 text-base font-semibold">{result.disease}</h2>
+                    <p className="text-xs text-muted-foreground">
+                      {content.species}: {result.species}
+                    </p>
+                  </div>
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${urgencyClass[result.urgency]}`}
+                  >
+                    {urgencyLabel[result.urgency]}
+                  </span>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-[11px] text-muted-foreground">
+                    <span>{content.resultLabel}</span>
+                    <span>{Math.round(result.confidence * 100)}%</span>
+                  </div>
+                  <div className="mt-1 h-1.5 w-full rounded-full bg-muted">
+                    <div
+                      className="h-1.5 rounded-full bg-primary"
+                      style={{ width: `${result.confidence * 100}%` }}
+                    />
+                  </div>
+                </div>
+
+                {result.differentials.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {result.differentials.map((d) => (
+                      <span
+                        key={d}
+                        className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground"
+                      >
+                        संभावित: {d}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <button
+                  onClick={speak}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-secondary py-2 text-xs font-medium text-secondary-foreground"
+                >
+                  <Volume2 className="h-4 w-4" />
+                  {speaking ? content.speaking : content.speak}
+                </button>
+              </Card>
+            )}
+          </div>
+        </div>
       </div>
-
-      {loading && (
-        <Card className="flex items-center gap-3 text-sm text-muted-foreground">
-          <Loader2 className="h-4 w-4 animate-spin text-primary" />
-          {content.scanning}
-        </Card>
-      )}
 
       {result && (
         <>
-          <Card className="space-y-3">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <SectionLabel>{content.identify}</SectionLabel>
-                <h2 className="mt-1 text-base font-semibold">{result.disease}</h2>
-                <p className="text-xs text-muted-foreground">
-                  {content.species}: {result.species}
-                </p>
-              </div>
-              <span
-                className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${urgencyClass[result.urgency]}`}
-              >
-                {urgencyLabel[result.urgency]}
-              </span>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-[11px] text-muted-foreground">
-                <span>{content.resultLabel}</span>
-                <span>{Math.round(result.confidence * 100)}%</span>
-              </div>
-              <div className="mt-1 h-1.5 w-full rounded-full bg-muted">
-                <div
-                  className="h-1.5 rounded-full bg-primary"
-                  style={{ width: `${result.confidence * 100}%` }}
-                />
-              </div>
-            </div>
-
-            {result.differentials.length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
-                {result.differentials.map((d) => (
-                  <span
-                    key={d}
-                    className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground"
-                  >
-                    संभावित: {d}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <button
-              onClick={speak}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-secondary py-2 text-xs font-medium text-secondary-foreground"
-            >
-              <Volume2 className="h-4 w-4" />
-              {speaking ? content.speaking : content.speak}
-            </button>
-          </Card>
-
-          <Card className="space-y-2 text-sm">
+          <Card className="space-y-2 text-sm lg:col-span-2">
             <SectionLabel>{content.treatment}</SectionLabel>
             <Row k={content.medicine} v={result.treatment.medicine} />
             <Row k={content.dosage} v={result.treatment.dosage} />
@@ -276,7 +286,7 @@ function DiagnosePage() {
           <button
             onClick={postToMap}
             disabled={posted}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground disabled:opacity-60 lg:col-span-2"
           >
             <MapPin className="h-4 w-4" />
             {posted ? content.posted : content.request}
