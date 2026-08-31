@@ -17,14 +17,14 @@ Module A — Crop/Livestock Disease Detection (Image → Diagnosis)
 AI Prompt Template (for the vision model call):
 
 You are an agricultural pathologist AI. You will be given an image of a crop leaf/stem/fruit or an animal.
+
 1. Identify the species (crop or livestock type) if not provided.
 2. Identify the most likely disease/pest/deficiency, with a confidence score.
 3. List 2-3 differential possibilities if confidence is below 80%.
 4. Give a treatment plan: recommended medicine/pesticide/vaccine (generic name), dosage, and organic/low-cost alternatives.
 5. State urgency level: Low / Medium / High / Outbreak-risk.
 6. Output strictly as JSON: {species, disease, confidence, differentials[], treatment{medicine, dosage, organic_alternative}, urgency, region_risk_notes}
-Respond only in JSON. Do not include any other text.
-
+   Respond only in JSON. Do not include any other text.
 
 Requirements:
 
@@ -49,16 +49,17 @@ Module C — Weather-Based Crop Advisory
 AI Prompt Template:
 
 You are an agronomy advisor. Given:
+
 - Location (lat/long or district)
 - 14-day weather forecast (temp, rainfall, humidity)
 - Soil type/soil health card data (if available)
 - Season and current/previous crop history
-Recommend:
+  Recommend:
+
 1. Top 3 suitable crops to plant now, ranked by expected yield and climate resilience.
 2. Key risks in the forecast window (e.g., waterlogging, heatwave, frost) and mitigation steps.
 3. Irrigation schedule suggestion for the next 7 days.
-Output as JSON: {recommended_crops[], risks[], irrigation_plan}
-
+   Output as JSON: {recommended_crops[], risks[], irrigation_plan}
 
 Pull real weather forecast via a weather API (e.g., IMD/Open-Meteo).
 
@@ -83,16 +84,17 @@ Module E — Insurance & Government Scheme Auto-Documentation
 AI Prompt Template:
 
 You are a government-scheme documentation assistant for Indian farmers. Given:
+
 - Farmer profile (name, land records, crop/livestock type)
 - Diagnosed disease/damage event (from Module A)
 - Weather event data (drought/flood/heatwave dates, from Module C)
 - Scheme type requested: PMFBY (crop insurance) / Animal Husbandry Scheme / State scheme
-Generate:
+  Generate:
+
 1. A checklist of documents/evidence needed for this specific claim.
 2. A pre-filled claim summary narrative (factual, based only on provided data — do not invent details).
 3. Eligibility flags: which schemes this event likely qualifies for, with the relevant clause/criteria.
-Output as JSON: {checklist[], claim_summary, eligible_schemes[]}
-
+   Output as JSON: {checklist[], claim_summary, eligible_schemes[]}
 
 Auto-attach the diagnosis report, geotagged photo, and weather data as claim evidence.
 
@@ -137,7 +139,7 @@ Show weather-based crop suggestion for the same farmer's location.
 Register a livestock entry, simulate a health event, show it sync to the map.
 
 Trigger the insurance/scheme module → show auto-generated claim checklist and summary from the disease + weather data already captured.
- with minimal clean ui and hindi texts
+with minimal clean ui and hindi texts
 
 This project was built with [Lovable](https://lovable.dev).
 

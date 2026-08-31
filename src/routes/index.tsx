@@ -3,13 +3,7 @@ import { useRef, useState } from "react";
 import { Camera, Mic, Volume2, WifiOff, MapPin, Loader2 } from "lucide-react";
 import { AppShell, Card, SectionLabel } from "@/components/AppShell";
 import { useLanguage } from "@/lib/i18n";
-import {
-  store,
-  mockDiagnoses,
-  urgencyClass,
-  urgencyLabel,
-  type Diagnosis,
-} from "@/lib/agri-store";
+import { store, mockDiagnoses, urgencyClass, urgencyLabel, type Diagnosis } from "@/lib/agri-store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
