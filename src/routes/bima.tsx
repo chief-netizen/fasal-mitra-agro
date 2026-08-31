@@ -4,6 +4,7 @@ import { FileText, Loader2, Check, Paperclip, AlertCircle, Volume2 } from "lucid
 import { AppShell, Card, SectionLabel } from "@/components/AppShell";
 import { useLanguage } from "@/lib/i18n";
 import { useAgri } from "@/lib/agri-store";
+import { generateClaimFormPDF } from "@/lib/pdf-generator";
 
 export const Route = createFileRoute("/bima")({
   head: () => ({
@@ -196,12 +197,56 @@ function BimaPage() {
         };
 
   function generate() {
+    if (!latest) return;
+
     setLoading(true);
     setReady(false);
-    setTimeout(() => {
+
+    // Simulate processing
+    setTimeout(async () => {
+      const schemeEligibilityText = {
+        en: {
+          pmfby: "PMFBY — likely eligible for notified crop loss under localized disaster clause",
+          ah: "Livestock Support — eligible after veterinary verification",
+          state: "State Disaster Relief — under review for rain-related damage",
+        },
+        hi: {
+          pmfby: "PMFBY — अधिसूचित आपदा खंड के तहत संभावित पात्र",
+          ah: "पशुपालन योजना — पशु चिकित्सक सत्यापन के बाद पात्र",
+          state: "राज्य आपदा राहत — वर्षा-जनित क्षति के अंतर्गत समीक्षा योग्य",
+        },
+      };
+
+      const claimSummaryText = {
+        en: `Date ${new Date().toLocaleDateString("en-IN")} — farmer Ram Lal Yadav has submitted a crop loss declaration for 1.2 hectares under scheme ${scheme.toUpperCase()}. AI diagnosis confirms ${latest.disease ?? "crop disease"} with ${Math.round((latest.confidence ?? 0) * 100)}% confidence. Weather risk is recorded as 75% and the geo-tagged evidence is attached. The final claim draft is ready for submission to the agricultural office.`,
+        hi: `दिनांक ${new Date().toLocaleDateString("hi-IN")} को रामलाल यादव द्वारा योजना ${scheme === "pmfby" ? "PMFBY" : scheme === "ah" ? "पशुपालन" : "राज्य आपदा राहत"} के तहत 1.2 हेक्टेयर की फ़सल के लिए दावा ड्राफ़्ट तैयार किया गया है। AI द्वारा ${latest.disease ?? "रोग"} की पुष्टि ${Math.round((latest.confidence ?? 0) * 100)}% विश्वास के साथ हुई है। मौसम से संबंधित 75% जोखिम और जियो-टैग फोटो संलग्न हैं। दावा फार्म कृषि कार्यालय में जमा के लिए तैयार है।`,
+      };
+
+      // Generate PDF with claim data
+      try {
+        await generateClaimFormPDF({
+          scheme,
+          farmerName: "Ram Lal Yadav",
+          landRecord: "214/3",
+          district: "Varanasi, UP",
+          disease: latest.disease ?? "Crop disease",
+          confidence: latest.confidence ?? 0,
+          area: "1.2",
+          language,
+          date: new Date(),
+          weatherInfo: "4–6 days heavy rain (75%)",
+          requiredDocs: docs,
+          claimSummary: claimSummaryText[language],
+          attachedFiles: 3,
+          schemeEligibility: schemeEligibilityText[language][scheme],
+        });
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+      }
+
       setLoading(false);
       setReady(true);
-    }, 1500);
+    }, 1000);
   }
 
   function playVoiceGuide() {
