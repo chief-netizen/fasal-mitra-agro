@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { CloudRain, Droplets, Sun, TriangleAlert, Loader2, Sprout } from "lucide-react";
 import { AppShell, Card, SectionLabel } from "@/components/AppShell";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/mausam")({
   head: () => ({
@@ -39,8 +40,24 @@ const crops = [
 ];
 
 function MausamPage() {
+  const { language } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
+
+  const content =
+    language === "en"
+      ? {
+          title: "Weather and crop advice",
+          subtitle: "Varanasi, UP · Kharif season",
+          button: "Get advice for my field",
+          loading: "Preparing advice…",
+        }
+      : {
+          title: "मौसम व फ़सल सलाह",
+          subtitle: "वाराणसी, उ.प्र. · खरीफ़ मौसम",
+          button: "मेरे खेत के लिए सलाह पाएँ",
+          loading: "सलाह तैयार हो रही है…",
+        };
 
   function generate() {
     setLoading(true);
@@ -51,7 +68,7 @@ function MausamPage() {
   }
 
   return (
-    <AppShell title="मौसम व फ़सल सलाह" subtitle="वाराणसी, उ.प्र. · खरीफ़ मौसम">
+    <AppShell title={content.title} subtitle={content.subtitle}>
       <Card className="flex items-center gap-4">
         <Sun className="h-10 w-10 text-warning" />
         <div>
@@ -89,7 +106,7 @@ function MausamPage() {
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sprout className="h-4 w-4" />}
-          {loading ? "सलाह तैयार हो रही है…" : "मेरे खेत के लिए सलाह पाएँ"}
+          {loading ? content.loading : content.button}
         </button>
       )}
 

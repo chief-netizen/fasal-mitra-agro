@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AlertTriangle, HandHeart, CheckCircle2, Phone } from "lucide-react";
 import { AppShell, Card, SectionLabel } from "@/components/AppShell";
+import { useLanguage } from "@/lib/i18n";
 import { store, urgencyClass, urgencyLabel, useAgri, type Case } from "@/lib/agri-store";
 
 export const Route = createFileRoute("/map")({
@@ -32,9 +33,31 @@ function pos(c: Case) {
 }
 
 function MapPage() {
+  const { language } = useLanguage();
   const { cases } = useAgri();
   const [filter, setFilter] = useState<"all" | "crop" | "livestock">("all");
   const [selected, setSelected] = useState<string | null>(null);
+
+  const content =
+    language === "en"
+      ? {
+          title: "Community help map",
+          subtitle: "Open requests within 10 km",
+          all: "All",
+          crop: "Crops",
+          livestock: "Livestock",
+          alert: "Outbreak alert",
+          open: "Open requests",
+        }
+      : {
+          title: "समुदाय सहायता नक्शा",
+          subtitle: "10 किमी के दायरे में खुली माँगें",
+          all: "सभी",
+          crop: "फ़सल",
+          livestock: "पशु",
+          alert: "महामारी अलर्ट",
+          open: "खुली माँगें",
+        };
 
   const pins = useMemo(
     () => cases.filter((c) => (filter === "all" ? true : c.kind === filter)),
@@ -54,12 +77,12 @@ function MapPage() {
   const active = cases.find((c) => c.id === selected);
 
   return (
-    <AppShell title="समुदाय सहायता नक्शा" subtitle="10 किमी के दायरे में खुली माँगें">
+    <AppShell title={content.title} subtitle={content.subtitle}>
       {outbreak && (
         <Card className="flex gap-3 border-destructive/30 bg-destructive/5">
           <AlertTriangle className="h-5 w-5 shrink-0 text-destructive" />
           <div>
-            <p className="text-sm font-semibold text-destructive">महामारी अलर्ट</p>
+            <p className="text-sm font-semibold text-destructive">{content.alert}</p>
             <p className="text-xs text-muted-foreground">
               {outbreak[0]} — {outbreak[1].length} मामले पास-पास दर्ज। सभी किसानों को सूचना भेजी गई।
             </p>
@@ -70,9 +93,9 @@ function MapPage() {
       <div className="flex gap-2">
         {(
           [
-            ["all", "सभी"],
-            ["crop", "फ़सल"],
-            ["livestock", "पशु"],
+            ["all", content.all],
+            ["crop", content.crop],
+            ["livestock", content.livestock],
           ] as const
         ).map(([k, label]) => (
           <button
@@ -125,7 +148,9 @@ function MapPage() {
 
       {active && <CaseCard c={active} />}
 
-      <SectionLabel>खुली माँगें ({pins.filter((c) => c.status === "Open").length})</SectionLabel>
+      <SectionLabel>
+        {content.open} ({pins.filter((c) => c.status === "Open").length})
+      </SectionLabel>
       {pins.map((c) => (
         <CaseCard key={c.id} c={c} compact onSelect={() => setSelected(c.id)} />
       ))}

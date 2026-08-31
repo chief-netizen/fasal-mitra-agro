@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { FileText, Loader2, Check, Paperclip, AlertCircle } from "lucide-react";
 import { AppShell, Card, SectionLabel } from "@/components/AppShell";
+import { useLanguage } from "@/lib/i18n";
 import { useAgri } from "@/lib/agri-store";
 
 export const Route = createFileRoute("/bima")({
@@ -30,11 +31,27 @@ const schemes = [
 ];
 
 function BimaPage() {
+  const { language } = useLanguage();
   const { cases } = useAgri();
   const [scheme, setScheme] = useState("pmfby");
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
   const latest = cases[0];
+
+  const content =
+    language === "en"
+      ? {
+          title: "Insurance and scheme documents",
+          subtitle: "Prepared from recorded events",
+          button: "Generate claim form",
+          loading: "Preparing documents…",
+        }
+      : {
+          title: "बीमा व योजना दस्तावेज़",
+          subtitle: "दर्ज घटनाओं से अपने आप तैयार",
+          button: "दावा दस्तावेज़ बनाएँ",
+          loading: "दस्तावेज़ बन रहे हैं…",
+        };
 
   function generate() {
     setLoading(true);
@@ -46,7 +63,7 @@ function BimaPage() {
   }
 
   return (
-    <AppShell title="बीमा व योजना दस्तावेज़" subtitle="दर्ज घटनाओं से अपने आप तैयार">
+    <AppShell title={content.title} subtitle={content.subtitle}>
       <Card className="space-y-2">
         <SectionLabel>योजना चुनें</SectionLabel>
         <div className="flex flex-wrap gap-2">
@@ -79,7 +96,7 @@ function BimaPage() {
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground"
       >
         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
-        {loading ? "दस्तावेज़ बन रहे हैं…" : "दावा दस्तावेज़ बनाएँ"}
+        {loading ? content.loading : content.button}
       </button>
 
       {ready && (

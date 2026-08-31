@@ -4,13 +4,22 @@ import type { ReactNode } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useLanguage } from "@/lib/i18n";
 
-const nav = [
-  { to: "/", label: "जाँच", icon: Leaf },
-  { to: "/map", label: "सहायता नक्शा", icon: MapPin },
-  { to: "/mausam", label: "मौसम", icon: CloudSun },
-  { to: "/pashudhan", label: "पशुधन", icon: Beef },
-  { to: "/bima", label: "बीमा", icon: FileText },
-];
+const nav = {
+  en: [
+    { to: "/", label: "Check", icon: Leaf },
+    { to: "/map", label: "Help map", icon: MapPin },
+    { to: "/mausam", label: "Weather", icon: CloudSun },
+    { to: "/pashudhan", label: "Livestock", icon: Beef },
+    { to: "/bima", label: "Insurance", icon: FileText },
+  ],
+  hi: [
+    { to: "/", label: "जाँच", icon: Leaf },
+    { to: "/map", label: "सहायता नक्शा", icon: MapPin },
+    { to: "/mausam", label: "मौसम", icon: CloudSun },
+    { to: "/pashudhan", label: "पशुधन", icon: Beef },
+    { to: "/bima", label: "बीमा", icon: FileText },
+  ],
+} as const;
 
 export function AppShell({
   title,
@@ -23,6 +32,7 @@ export function AppShell({
 }) {
   const path = useRouterState({ select: (s) => s.location.pathname });
   const { language, setLanguage } = useLanguage();
+  const navItems = language === "en" ? nav.en : nav.hi;
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-background">
@@ -52,7 +62,7 @@ export function AppShell({
       <main className="flex-1 space-y-4 px-5 py-5">{children}</main>
 
       <nav className="sticky bottom-0 z-20 grid grid-cols-5 border-t border-border bg-card/95 backdrop-blur">
-        {nav.map(({ to, label, icon: Icon }) => {
+        {navItems.map(({ to, label, icon: Icon }) => {
           const active = path === to;
           return (
             <Link

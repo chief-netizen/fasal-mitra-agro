@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { QrCode, Syringe, HeartPulse, Plus, Radio } from "lucide-react";
 import { AppShell, Card, SectionLabel } from "@/components/AppShell";
+import { useLanguage } from "@/lib/i18n";
 import { store, useAgri } from "@/lib/agri-store";
 
 export const Route = createFileRoute("/pashudhan")({
@@ -24,11 +25,25 @@ export const Route = createFileRoute("/pashudhan")({
 });
 
 function PashudhanPage() {
+  const { language } = useLanguage();
   const { animals } = useAgri();
   const [open, setOpen] = useState(false);
   const [tag, setTag] = useState("");
   const [species, setSpecies] = useState("गाय");
   const [breed, setBreed] = useState("");
+
+  const content =
+    language === "en"
+      ? {
+          title: "Livestock register",
+          subtitle: `${animals.length} animals registered`,
+          button: "Register animal",
+        }
+      : {
+          title: "पशुधन रजिस्टर",
+          subtitle: `${animals.length} पशु पंजीकृत`,
+          button: "पशु पंजीकृत करें",
+        };
 
   function add() {
     if (!tag.trim()) return;
@@ -49,7 +64,7 @@ function PashudhanPage() {
   }
 
   return (
-    <AppShell title="पशुधन रजिस्टर" subtitle={`${animals.length} पशु पंजीकृत`}>
+    <AppShell title={content.title} subtitle={content.subtitle}>
       <Card className="flex gap-3 border-warning/40 bg-warning/10">
         <Syringe className="h-5 w-5 shrink-0 text-warning-foreground" />
         <div className="text-xs text-warning-foreground">
@@ -99,7 +114,7 @@ function PashudhanPage() {
           onClick={() => setOpen(true)}
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground"
         >
-          <Plus className="h-4 w-4" /> पशु पंजीकृत करें
+          <Plus className="h-4 w-4" /> {content.button}
         </button>
       )}
 
