@@ -51,12 +51,52 @@ function MausamPage() {
           subtitle: "Varanasi, UP · Kharif season",
           button: "Get advice for my field",
           loading: "Preparing advice…",
+          forecast: "7-day forecast",
+          risk: "Smart weather risk",
+          irrigation: "Irrigation plan",
+          cropTitle: "Top 3 crops to sow now",
+          riskNote:
+            "Heavy rain is expected on Thu–Fri. Drain low-lying plots, keep channels open, and postpone nitrogen spray.",
+          irrigationPlan: [
+            "Mon–Tue: light irrigation (2 cm) during the morning",
+            "Wed–Fri: hold irrigation — rainfall is likely enough",
+            "Sat: drain extra water from low fields",
+            "Sun: irrigate only if the soil moisture drops below 30%",
+          ],
+          summary: {
+            score: "Weather safety score",
+            scoreValue: "82/100",
+            water: "Recommended water",
+            waterValue: "18 mm across 3 days",
+            crop: "Best crop match",
+            cropValue: "Rice (golden sub-1)",
+          },
         }
       : {
           title: "मौसम व फ़सल सलाह",
           subtitle: "वाराणसी, उ.प्र. · खरीफ़ मौसम",
           button: "मेरे खेत के लिए सलाह पाएँ",
           loading: "सलाह तैयार हो रही है…",
+          forecast: "7 दिन का पूर्वानुमान",
+          risk: "स्मार्ट मौसम जोखिम",
+          irrigation: "7 दिन की सिंचाई योजना",
+          cropTitle: "अभी बोने योग्य शीर्ष 3 फ़सलें",
+          riskNote:
+            "गुरु–शुक्र को भारी वर्षा (75%) — निचले खेतों में जलभराव का खतरा। जल निकासी नाली साफ़ करें और यूरिया का छिड़काव टालें।",
+          irrigationPlan: [
+            "सोम–मंगल: हल्की सिंचाई (2 सेमी), सुबह के समय",
+            "बुध–शुक्र: सिंचाई बंद — वर्षा पर्याप्त",
+            "शनि: खेत से अतिरिक्त पानी निकालें",
+            "रवि: आवश्यकता अनुसार 3 सेमी सिंचाई",
+          ],
+          summary: {
+            score: "मौसम सुरक्षा स्कोर",
+            scoreValue: "82/100",
+            water: "सिफारिश की गई पानी",
+            waterValue: "3 दिनों में 18 मिमी",
+            crop: "सबसे सही फसल",
+            cropValue: "धान (स्वर्णा सब-1)",
+          },
         };
 
   function generate() {
@@ -82,8 +122,26 @@ function MausamPage() {
         </span>
       </Card>
 
+      <Card className="space-y-3">
+        <SectionLabel>{content.summary.score}</SectionLabel>
+        <div className="grid grid-cols-3 gap-2 text-center">
+          <div className="rounded-lg bg-primary/10 p-2">
+            <p className="text-[10px] text-muted-foreground">{content.summary.scoreValue}</p>
+            <p className="text-xs font-semibold text-primary">{content.summary.score}</p>
+          </div>
+          <div className="rounded-lg bg-secondary/70 p-2">
+            <p className="text-[10px] text-muted-foreground">{content.summary.water}</p>
+            <p className="text-xs font-semibold">{content.summary.waterValue}</p>
+          </div>
+          <div className="rounded-lg bg-accent/60 p-2">
+            <p className="text-[10px] text-muted-foreground">{content.summary.crop}</p>
+            <p className="text-xs font-semibold">{content.summary.cropValue}</p>
+          </div>
+        </div>
+      </Card>
+
       <Card>
-        <SectionLabel>7 दिन का पूर्वानुमान</SectionLabel>
+        <SectionLabel>{content.forecast}</SectionLabel>
         <div className="mt-3 flex justify-between">
           {forecast.map((f) => (
             <div key={f.d} className="flex flex-col items-center gap-1">
@@ -112,7 +170,7 @@ function MausamPage() {
 
       {ready && (
         <>
-          <SectionLabel>अभी बोने योग्य शीर्ष 3 फ़सलें</SectionLabel>
+          <SectionLabel>{content.cropTitle}</SectionLabel>
           {crops.map((c, i) => (
             <Card key={c.name} className="flex gap-3">
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
@@ -128,24 +186,20 @@ function MausamPage() {
 
           <Card className="space-y-2 border-warning/40 bg-warning/10">
             <div className="flex items-center gap-2 text-sm font-semibold text-warning-foreground">
-              <TriangleAlert className="h-4 w-4" /> जोखिम चेतावनी
+              <TriangleAlert className="h-4 w-4" /> {content.risk}
             </div>
-            <p className="text-xs text-warning-foreground">
-              गुरु–शुक्र को भारी वर्षा (75%) — निचले खेतों में जलभराव का खतरा। जल निकासी नाली साफ़
-              करें और यूरिया का छिड़काव टालें।
-            </p>
+            <p className="text-xs text-warning-foreground">{content.riskNote}</p>
           </Card>
 
           <Card className="space-y-2">
             <div className="flex items-center gap-2">
               <Droplets className="h-4 w-4 text-primary" />
-              <SectionLabel>7 दिन की सिंचाई योजना</SectionLabel>
+              <SectionLabel>{content.irrigation}</SectionLabel>
             </div>
             <ul className="space-y-1.5 text-xs text-muted-foreground">
-              <li>• सोम–मंगल: हल्की सिंचाई (2 सेमी), सुबह के समय</li>
-              <li>• बुध–शुक्र: सिंचाई बंद — वर्षा पर्याप्त</li>
-              <li>• शनि: खेत से अतिरिक्त पानी निकालें</li>
-              <li>• रवि: आवश्यकता अनुसार 3 सेमी सिंचाई</li>
+              {content.irrigationPlan.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
             </ul>
           </Card>
 
