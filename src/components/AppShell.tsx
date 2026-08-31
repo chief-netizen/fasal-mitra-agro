@@ -1,6 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Leaf, MapPin, CloudSun, Beef, FileText } from "lucide-react";
 import type { ReactNode } from "react";
+import { Switch } from "@/components/ui/switch";
+import { useLanguage } from "@/lib/i18n";
 
 const nav = [
   { to: "/", label: "जाँच", icon: Leaf },
@@ -20,6 +22,7 @@ export function AppShell({
   children: ReactNode;
 }) {
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const { language, setLanguage } = useLanguage();
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-background">
@@ -29,9 +32,18 @@ export function AppShell({
             <Leaf className="h-4 w-4" />
           </span>
           <span className="text-sm font-semibold tracking-tight">AgriConnect</span>
-          <span className="ml-auto rounded-full bg-secondary px-2 py-0.5 text-[10px] font-medium text-secondary-foreground">
-            प्रोटोटाइप
-          </span>
+
+          <div className="ml-auto flex items-center gap-2">
+            <span className="text-[10px] font-medium text-muted-foreground">
+              {language === "en" ? "EN" : "हिंदी"}
+            </span>
+            <Switch
+              checked={language === "hi"}
+              onCheckedChange={(checked) => setLanguage(checked ? "hi" : "en")}
+              aria-label="Toggle language"
+              className="data-[state=checked]:bg-primary"
+            />
+          </div>
         </div>
         <h1 className="mt-3 text-xl font-semibold tracking-tight">{title}</h1>
         <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>
