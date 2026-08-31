@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { FileText, Loader2, Check, Paperclip, AlertCircle, Volume2 } from "lucide-react";
+import { jsPDF } from "jspdf";
 import { AppShell, Card, SectionLabel } from "@/components/AppShell";
 import { useLanguage } from "@/lib/i18n";
 import { useAgri } from "@/lib/agri-store";
@@ -204,6 +205,161 @@ function BimaPage() {
     }, 1500);
   }
 
+    function generatePDF() {
+    const doc = new jsPDF();
+
+    const isEnglish = language === "en";
+
+    const farmerName = "Ram Lal Yadav";
+    const district = "Varanasi, Uttar Pradesh";
+    const diagnosis = latest?.disease ?? "Crop disease";
+    const confidence = latest
+      ? `${Math.round(latest.confidence * 100)}%`
+      : "N/A";
+
+    const schemeName =
+      scheme === "pmfby"
+        ? "PMFBY - Crop Insurance"
+        : scheme === "ah"
+          ? "Livestock Support Scheme"
+          : "State Disaster Relief";
+
+    let y = 20;
+
+    // Title
+    doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
+    doc.text(
+      isEnglish
+        ? "AgriConnect - Insurance Claim Report"
+        : "AgriConnect - Insurance Claim Report",
+      20,
+      y,
+    );
+
+    y += 12;
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+
+    doc.text(
+      `Generated: ${new Date().toLocaleDateString("en-IN")}`,
+      20,
+      y,
+    );
+
+    y += 15;
+
+    // Farmer details
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.text(
+      isEnglish ? "Farmer Details" : "Farmer Details",
+      20,
+      y,
+    );
+
+    y += 9;
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+
+    doc.text(`Farmer: ${farmerName}`, 20, y);
+    y += 7;
+
+    doc.text(`District: ${district}`, 20, y);
+    y += 7;
+
+    doc.text(`Land area: 1.2 hectares`, 20, y);
+    y += 15;
+
+    // Claim details
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.text("Claim Details", 20, y);
+
+    y += 9;
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+
+    doc.text(`Scheme: ${schemeName}`, 20, y);
+    y += 7;
+
+    doc.text(`AI Diagnosis: ${diagnosis}`, 20, y);
+    y += 7;
+
+    doc.text(`AI Confidence: ${confidence}`, 20, y);
+    y += 7;
+
+    doc.text("Weather Risk: 75%", 20, y);
+    y += 7;
+
+    doc.text("Geo-tagged evidence: Attached", 20, y);
+    y += 15;
+
+    // Required documents
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.text("Required Documents", 20, y);
+
+    y += 9;
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+
+    docs.forEach((item, index) => {
+      const documentName = isEnglish ? item.label : item.label;
+
+      doc.text(
+        `${index + 1}. ${documentName}`,
+        20,
+        y,
+      );
+
+      y += 7;
+    });
+
+    y += 8;
+
+    // Submission status
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.text("Claim Status", 20, y);
+
+    y += 9;
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+
+    doc.text(
+      "Claim draft generated from AgriConnect recorded evidence.",
+      20,
+      y,
+    );
+
+    y += 7;
+
+    doc.text(
+      "Please verify all information before submitting.",
+      20,
+      y,
+    );
+
+    y += 15;
+
+    doc.setFontSize(9);
+    doc.text(
+      "AgriConnect - Farmer assistance and insurance documentation",
+      20,
+      y,
+    );
+
+    doc.save(
+      `AgriConnect-${scheme}-claim-report.pdf`,
+    );
+  }
+
   function playVoiceGuide() {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
 
@@ -311,6 +467,18 @@ function BimaPage() {
         {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
         {loading ? content.loading : content.button}
       </button>
+
+            {ready && (
+        <button
+          onClick={generatePDF}
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-semibold"
+        >
+          <FileText className="h-4 w-4" />
+          {language === "en"
+            ? "Download PDF claim report"
+            : "दावा रिपोर्ट PDF डाउनलोड करें"}
+        </button>
+      )}
 
       {ready && (
         <>
