@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { Camera, Mic, Volume2, WifiOff, MapPin, Loader2 } from "lucide-react";
 import { AppShell, Card, SectionLabel } from "@/components/AppShell";
@@ -26,6 +26,7 @@ export const Route = createFileRoute("/")({
 
 function DiagnosePage() {
   const { language } = useLanguage();
+  const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -135,22 +136,26 @@ function DiagnosePage() {
 
   function postToMap() {
     if (!result) return;
-    store.addCase({
+
+    const caseData = {
       id: `c-${Date.now()}`,
       kind: result.species === "गाय" || result.species === "भैंस" ? "livestock" : "crop",
       createdAt: "अभी",
       farmer: "रामलाल यादव",
       district: "वाराणसी, उ.प्र.",
-      lat: 25.36,
-      lng: 82.9,
+      lat: 25.36 + (Math.random() - 0.5) * 0.12,
+      lng: 82.9 + (Math.random() - 0.5) * 0.12,
       medicine_needed: result.treatment.medicine,
       quantity: "500 ग्राम",
-      status: "Open",
-      helpers: [],
+      status: "Open" as const,
+      helpers: [] as { name: string; type: string; note: string }[],
       ...(preview ? { imageUrl: preview } : {}),
       ...result,
-    });
+    };
+
+    store.addCase(caseData);
     setPosted(true);
+    navigate({ to: "/map" });
   }
 
   return (
