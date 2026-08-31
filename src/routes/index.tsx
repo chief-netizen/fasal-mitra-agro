@@ -155,8 +155,8 @@ function DiagnosePage() {
 
   return (
     <AppShell title={content.appTitle} subtitle={content.subtitle}>
-      <Card className="flex items-center justify-between gap-3 bg-secondary/60 lg:col-span-2">
-        <div className="flex items-center gap-2 text-xs text-secondary-foreground">
+      <Card className="flex items-center justify-between gap-3 bg-[#eef4ed] text-[#1f3a2d] lg:col-span-2">
+        <div className="flex items-center gap-2 text-sm font-medium">
           <WifiOff className="h-4 w-4" />
           {content.offline}
         </div>
@@ -178,29 +178,31 @@ function DiagnosePage() {
               <img
                 src={preview}
                 alt="अपलोड की गई फ़सल/पशु की फ़ोटो"
-                className="h-64 w-full rounded-xl border border-border object-cover"
+                className="h-64 w-full rounded-2xl border border-border object-cover shadow-sm"
               />
             ) : (
               <button
                 onClick={() => fileRef.current?.click()}
-                className="flex h-64 w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border bg-card text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+                className="flex h-64 w-full flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-[#d4d9d0] bg-[#f9faf7] text-muted-foreground transition-all duration-200 hover:border-primary hover:bg-[#f1f8f2] hover:text-primary"
               >
-                <Camera className="h-8 w-8" />
-                <span className="text-sm font-medium">{content.upload}</span>
-                <span className="text-[11px]">{content.uploadHint}</span>
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm">
+                  <Camera className="h-8 w-8" />
+                </div>
+                <span className="text-lg font-semibold text-foreground">{content.upload}</span>
+                <span className="text-[11px] text-muted-foreground">{content.uploadHint}</span>
               </button>
             )}
 
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={() => fileRef.current?.click()}
-                className="rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground"
+                className="rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:translate-y-[-1px]"
               >
                 {content.check}
               </button>
               <button
                 onClick={() => runDiagnosis(null)}
-                className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-medium"
+                className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-medium shadow-sm"
               >
                 <Mic className="h-4 w-4" /> {content.sample}
               </button>
@@ -269,6 +271,21 @@ function DiagnosePage() {
             )}
           </div>
         </div>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Card className="p-3">
+            <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Status</p>
+            <p className="mt-2 text-base font-semibold">Healthy</p>
+          </Card>
+          <Card className="p-3">
+            <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Weather</p>
+            <p className="mt-2 text-base font-semibold">Rain risk</p>
+          </Card>
+          <Card className="p-3">
+            <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Insurance</p>
+            <p className="mt-2 text-base font-semibold">2 docs left</p>
+          </Card>
+        </div>
       </div>
 
       {result && (
@@ -286,7 +303,7 @@ function DiagnosePage() {
           <button
             onClick={postToMap}
             disabled={posted}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground disabled:opacity-60 lg:col-span-2"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm disabled:opacity-60 lg:col-span-2"
           >
             <MapPin className="h-4 w-4" />
             {posted ? content.posted : content.request}
